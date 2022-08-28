@@ -7,6 +7,8 @@
 //
 #include <jxy/locks.hpp>
 
+#if (NTDDI_VERSION >= NTDDI_WIN8)
+
 jxy::shared_mutex::shared_mutex() noexcept
 {
     FltInitializePushLock(&m_PushLock);
@@ -53,3 +55,5 @@ jxy::shared_mutex::native_handle_type jxy::shared_mutex::native_handle() noexcep
 {
     return &m_PushLock;
 }
+
+#endif // NTDDI_VERSION >= NTDDI_WIN8
