@@ -60,10 +60,10 @@ public:
     {
     }
 
-    _CONSTEXPR20_DYNALLOC ~allocator() = default;
-    _CONSTEXPR20_DYNALLOC allocator& operator=(const allocator&) = default;
+    _CONSTEXPR20 ~allocator() = default;
+    _CONSTEXPR20 allocator& operator=(const allocator&) = default;
 
-    _CONSTEXPR20_DYNALLOC
+    _CONSTEXPR20
     void deallocate(
         value_type* const Memory,
         const size_type)
@@ -74,7 +74,7 @@ public:
         }
     }
 
-    _NODISCARD _CONSTEXPR20_DYNALLOC
+    _NODISCARD _CONSTEXPR20
     __declspec(allocator)
     value_type* allocate(_CRT_GUARDOVERFLOW const size_type Count)
     {
