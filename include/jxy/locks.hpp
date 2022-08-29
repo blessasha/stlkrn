@@ -103,6 +103,69 @@ private:
 
 };
 
+template <ULONG t_PoolTag>
+class simple_mutex
+{
+public:
+
+    using native_handle_type = PRKMUTEX;
+
+    simple_mutex() noexcept(false)
+    {
+        m_Mutex = static_cast<PRKMUTEX>(
+            ExAllocatePoolWithTag(NonPagedPoolNx,
+                sizeof(*m_Mutex),
+                t_PoolTag));
+        if (!m_Mutex)
+        {
+            throw std::bad_alloc();
+        }
+
+        KeInitializeMutex(m_Mutex, NULL);
+    }
+
+    ~simple_mutex() noexcept
+    {
+        if (m_Mutex)
+        {
+            ExFreePoolWithTag(m_Mutex, t_PoolTag);
+        }
+    }
+
+    _IRQL_requires_min_(PASSIVE_LEVEL)
+    _When_((Timeout == NULL || Timeout->QuadPart != 0), _IRQL_requires_max_(APC_LEVEL))
+    _When_((Timeout != NULL && Timeout->QuadPart == 0), _IRQL_requires_max_(DISPATCH_LEVEL))
+    NTSTATUS lock(_In_opt_ PLARGE_INTEGER Timeout = nullptr) noexcept 
+    {
+        auto status = KeWaitForSingleObject(m_Mutex, Executive, KernelMode, FALSE, Timeout);
+        return status;
+    }
+
+    _IRQL_requires_max_(DISPATCH_LEVEL)
+    bool check() noexcept
+    {
+        return (KeReadStateMutex(m_Mutex) != FALSE ? true : false);
+    }
+
+    _IRQL_requires_max_(DISPATCH_LEVEL)
+    void unlock() noexcept
+    {
+        KeReleaseMutex(m_Mutex, FALSE);
+    }
+
+    native_handle_type native_handle() noexcept
+    {
+        return m_Mutex;
+    }
+
+private:
+
+    PRKMUTEX m_Mutex = nullptr;
+
+};
+
+
+
 template <typename T>
 using shared_lock = std::shared_lock<T>;
 
