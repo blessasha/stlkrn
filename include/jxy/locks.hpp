@@ -23,7 +23,6 @@
 namespace jxy
 {
 
-#if (NTDDI_VERSION >= NTDDI_WIN8)
 class shared_mutex
 {
 public:
@@ -45,8 +44,6 @@ private:
     EX_PUSH_LOCK m_PushLock;
 
 };
-
-#endif  //(NTDDI_VERSION >= NTDDI_WIN8)
 
 template <ULONG t_PoolTag>
 class mutex
