@@ -7,12 +7,12 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <ExceptionHandling>Async</ExceptionHandling>
+      <ExceptionHandling>Sync</ExceptionHandling>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies Condition="$(Platform) == 'Win32'">$(ProjectDir)..\3rd\stlkrn\third-party\vcrtl\$(PlatformTarget)\vcrtl_driver.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalDependencies Condition="$(Platform) != 'Win32'">$(ProjectDir)..\3rd\stlkrn\third-party\vcrtl\$(PlatformTarget)\vcrtl_driver.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="$(Platform) == 'Win32'">$(ProjectDir)..\dependencies\stlkrn\third-party\vcrtl\$(PlatformTarget)\vcrtl_driver.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="$(Platform) != 'Win32'">$(ProjectDir)..\dependencies\stlkrn\third-party\vcrtl\$(PlatformTarget)\vcrtl_driver.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
 </Project>
